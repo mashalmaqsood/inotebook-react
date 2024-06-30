@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "MASHALMAQSOOD";
 const fetchUser = require("../middleware/fetchuser");
+const { body, validationResult } = require("express-validator");
+
 router.post(
   "/createuser",
   [
@@ -46,7 +47,7 @@ router.post(
       res.json({ authToken });
     } catch (error) {
       console.log(error.message);
-      res.status(500).send("some error occured");
+      res.status(500).send("Internal Server Error");
     }
   }
 );
@@ -86,7 +87,7 @@ router.post(
       res.json({ authToken });
     } catch (error) {
       console.log(error.message);
-      res.status(500).send("some error occured");
+      res.status(500).send("Internal Server Error");
     }
   }
 );
