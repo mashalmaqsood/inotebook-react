@@ -5,6 +5,7 @@ const Note = require("../models/Notes");
 const { body, validationResult } = require("express-validator");
 const Notes = require("../models/Notes");
 
+// Route 1: Get All the Notes using: GET "/api/notes/getuser". Login required
 router.get("/getAllNotes", fetchUser, async (req, res) => {
   try {
     //as fetch user adds user id to tthee request
@@ -16,6 +17,7 @@ router.get("/getAllNotes", fetchUser, async (req, res) => {
   }
 });
 
+// Route 2: Add a new Note using: POST "/api/notes/addnote". Login required
 router.post(
   "/addNote",
   fetchUser,
@@ -49,6 +51,7 @@ router.post(
   }
 );
 
+// Route 3: Update an existing Note using: PUT "/api/notes/updatenote". Login required
 router.put(
   "/updateNote/:id",
   fetchUser,
@@ -83,6 +86,7 @@ router.put(
   }
 );
 
+// Route 4: Delete an existing Note using: DELETE "/api/notes/deletenote". Login required
 router.delete("/deleteNote/:id", fetchUser, async (req, res) => {
   try {
     let note = await Note.findById(req.params.id);
