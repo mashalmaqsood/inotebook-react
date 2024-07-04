@@ -20,6 +20,7 @@ router.post(
   ],
   async (req, res) => {
     // If there are errors, return Bad request and the errors
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -45,7 +46,8 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
-      res.json({ authToken });
+      success = true;
+      res.json({ success, authToken });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal Server Error");
@@ -67,6 +69,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const { email, password } = req.body;
+    let success = false;
     try {
       let user = await User.findOne({ email });
       if (!user) {
@@ -86,7 +89,8 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
-      res.json({ authToken });
+      success = true;
+      res.json({ success,authToken });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal Server Error");
