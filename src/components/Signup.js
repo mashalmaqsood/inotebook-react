@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = (props) => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const host = "http://localhost:5000/";
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = `${host}api/auth/createuser`;
+      const url = `${process.env.REACT_APP_HOST}api/auth/createuser`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -28,21 +27,22 @@ const Signup = () => {
         throw new Error(`Response status: ${response.status}`);
       }
       const json = await response.json();
-      console.log("jsonnn", json);
       if (json.success) {
         navigate("/");
+        props.showAlert("Logged in successfully!", "success");
       }
     } catch (error) {
       console.error(error.message);
+      props.showAlert("Invalid Credentials", "danger");
     }
   };
 
   const onChange = (e) => {
-    console.log("e.target.value", e.target.value);
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
     <div>
+      <h3>Sign up to continue to iNotebook</h3>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
